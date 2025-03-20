@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('password');
-            $table->enum('role',['condidateur','recruteur'])->default('condidateur');
+            $table->enum('role',['condidateur','recruteur']);
             $table->rememberToken();
             $table->timestamps();
         });

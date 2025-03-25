@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class AnoonceSeeder extends Seeder
+class Annonce extends Seeder
 {
     /**
      * Run the database seeds.

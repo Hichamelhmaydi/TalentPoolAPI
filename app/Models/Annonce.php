@@ -2,16 +2,26 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Annonce extends Model
 {
-    protected $fillbale =[
+    use HasFactory;
+
+    protected $fillable = [
         'titre',
         'description',
         'user_id',
     ];
-    public function user() {
-        return $this->belongsTo(User::class);
-        }
+
+    public function recruteur()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function candidatures()
+    {
+        return $this->hasMany(Candidature::class);
+    }
 }

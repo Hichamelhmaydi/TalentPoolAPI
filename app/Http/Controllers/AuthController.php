@@ -11,15 +11,15 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 class AuthController extends Controller
 {
   
-    public function register(Request $request)
-    {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6',
-            'role'=> 'required|string',
-        ]);
+    public function register(Request $request){
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|string|email|max:255|unique:users',
+        'password' => 'required|string|min:6',
+        'role' => 'required|string|in:condidateur,recruteur', 
+    ]);
 
+    if ($request->role === "condidateur" || $request->role === "recruteur") {
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -28,11 +28,11 @@ class AuthController extends Controller
         ]);
 
         return response()->json(['message' => 'Utilisateur créé avec succès'], 201);
+    } else {
+        return response()->json(['message' => 'Ce rôle  pas valide']);
     }
-
-   
-    public function login(Request $request)
-    {
+    }
+    public function login(Request $request){
         $credentials = $request->only('email', 'password');
 
         if (!$token = Auth::guard('api')->attempt($credentials)) {
@@ -41,29 +41,17 @@ class AuthController extends Controller
 
         return $this->respondWithToken($token);
     }
-
-   
-    public function me()
-    {
+    public function me(){
         return response()->json(Auth::guard('api')->user());
     }
-
-  
-    public function logout()
-    {
+    public function logout(){
         Auth::guard('api')->logout();
         return response()->json(['message' => 'Déconnexion réussie']);
     }
-
-    
-    public function refresh()
-    {
+    public function refresh(){
         return $this->respondWithToken(Auth::guard('api')->refresh());
     }
-
-
-    protected function respondWithToken($token)
-    {
+    protected function respondWithToken($token){
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',

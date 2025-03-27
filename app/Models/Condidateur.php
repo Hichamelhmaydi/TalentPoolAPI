@@ -15,6 +15,7 @@ class Candidature extends Model
         'statut',
         'candidat_id',
         'annonce_id',
+        'recruteur_id'
     ];
 
     public function candidat()
